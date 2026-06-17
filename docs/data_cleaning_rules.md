@@ -103,3 +103,44 @@ The field likely represents missing or incorrectly entered passenger information
 
 Removing these records would unnecessarily discard a large amount of valid taxi activity.
 
+## Zero Fare Trips
+
+### Finding
+
+2,426 records contain fare_amount = 0.
+
+Inspection showed several categories:
+
+- cancelled or incomplete trips
+- trips with zero fare but non-zero surcharges
+- trips with zero fare but non-zero tips
+
+Most records do not appear corrupted.
+
+### Decision
+
+Keep zero-fare records.
+
+### Reason
+
+The records likely represent operational events, adjustments, cancellations, or billing exceptions rather than invalid data.
+
+## Invalid Timestamps
+
+### Finding
+
+A small number of records contain impossible timestamp values, including:
+
+- dropoff before pickup
+- dates that fall outside the dataset period
+
+### Decision
+
+Remove records with invalid timestamps.
+
+### Reason
+
+These records cannot be interpreted reliably and indicate data entry or system errors.
+
+
+

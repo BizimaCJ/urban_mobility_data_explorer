@@ -23,3 +23,33 @@ These records likely represent legitimate business events such as disputes, reve
 
 The records preserve potentially valuable operational information and should not be removed during cleaning.
 
+## Extreme Fare Outliers
+
+### Finding
+
+A very small number of records contain extremely large fare values.
+
+Examples include:
+
+- 623,259.86
+- 355,676.98
+- 36,090.30
+
+Many of these records also contain:
+
+- trip_distance = 0
+- identical pickup and dropoff timestamps
+- passenger_count = 0
+
+Only 18 records exceed 10,000.
+
+### Decision
+
+Remove records with clearly impossible fare values.
+
+### Reason
+
+These records are extremely rare and exhibit multiple indicators of corruption.
+
+Keeping them would distort statistical analysis and dashboard metrics.
+

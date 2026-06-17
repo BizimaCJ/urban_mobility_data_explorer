@@ -53,3 +53,29 @@ These records are extremely rare and exhibit multiple indicators of corruption.
 
 Keeping them would distort statistical analysis and dashboard metrics.
 
+## Zero-Distance Trips
+
+### Finding
+
+54,770 records have a trip_distance of 0.
+
+Sample inspection showed that many of these records contain:
+
+- valid pickup and dropoff timestamps
+- non-zero fares
+- non-zero tips
+- realistic payment information
+
+Some records appear to represent short trips, waiting charges, meter issues, cancellations, or trips that were rounded to zero distance.
+
+### Decision
+
+Keep zero-distance trips.
+
+### Reason
+
+Most sampled records appear operationally plausible and do not exhibit the characteristics of corrupted data.
+
+Removing them would discard potentially valid taxi activity.
+
+

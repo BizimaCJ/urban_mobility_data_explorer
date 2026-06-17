@@ -6,6 +6,7 @@ RAW_DATA_PATH = BASE_DIR / "data" / "raw" / "yellow_tripdata_2019-01.csv"
 OUTPUT_PATH = BASE_DIR / "data" / "clean" / "cleaned_trips.csv"
 
 def load_data():
+    print("Loading data...")
     return pd.read_csv(RAW_DATA_PATH)
 
 def remove_invalid_rows(df):
@@ -51,7 +52,9 @@ def main():
     df = add_basic_features(df)
     save_data(df)
 
+
 if __name__ == "__main__":
+    print("Pipeline started")
     main()
 
 

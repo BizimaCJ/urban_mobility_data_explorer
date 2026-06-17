@@ -3,6 +3,9 @@ import mysql.connector
 
 df = pd.read_csv("data/raw/taxi_zone_lookup.csv")
 
+df["Zone"] = df["Zone"].fillna("Unknown")
+df["service_zone"] = df["service_zone"].fillna("Unknown")
+
 conn = mysql.connector.connect(
     host="localhost",
     user="nyc_user",
@@ -11,6 +14,8 @@ conn = mysql.connector.connect(
 )
 
 cursor = conn.cursor()
+
+inserted = 0
 
 for _, row in df.iterrows():
     try:
@@ -32,14 +37,16 @@ for _, row in df.iterrows():
             )
         )
 
-    except Exception as e:
-        print("ERROR:")
-        print(e)
+        if cursor.rowcount == 1:
+            inserted += 1
+
+    except mysql.connector.Error as e:
+        print(f"Error: {e}")
         break
 
 conn.commit()
 
-print(f"Loaded {len(df)} locations.")
+print(f"Inserted {inserted} locations.")
 
 cursor.close()
 conn.close()

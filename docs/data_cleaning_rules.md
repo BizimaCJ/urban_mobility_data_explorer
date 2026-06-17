@@ -78,4 +78,28 @@ Most sampled records appear operationally plausible and do not exhibit the chara
 
 Removing them would discard potentially valid taxi activity.
 
+## Passenger Count Equal to Zero
+
+### Finding
+
+117,381 records contain passenger_count = 0.
+
+Sample inspection showed that these records often contain:
+
+- realistic trip distances
+- realistic trip durations
+- realistic fares
+- realistic tips
+
+The trips appear operationally valid.
+
+### Decision
+
+Keep records where passenger_count = 0.
+
+### Reason
+
+The field likely represents missing or incorrectly entered passenger information rather than invalid trips.
+
+Removing these records would unnecessarily discard a large amount of valid taxi activity.
 

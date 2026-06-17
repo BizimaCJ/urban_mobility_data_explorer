@@ -142,5 +142,38 @@ Remove records with invalid timestamps.
 
 These records cannot be interpreted reliably and indicate data entry or system errors.
 
+## Timestamp Validity (Year Constraint)
 
+### Finding
+
+A small number of records contain pickup or dropoff timestamps outside the expected time range of January 2019.
+
+Observed invalid years include:
+- 2001
+- 2003
+- 2008
+- 2009
+- 2088
+
+These represent a very small fraction of the dataset compared to valid 2019 records.
+
+### Decision
+
+Remove records where:
+- pickup year < 2018 OR pickup year > 2019
+- dropoff year < 2018 OR dropoff year > 2019
+
+(Alternatively: strictly enforce 2019-only depending on final schema constraints)
+
+### Reason
+
+These timestamps are physically impossible for the dataset context and indicate data corruption or misalignment during ingestion.
+
+## Summary of Cleaning Strategy
+
+The cleaning strategy is conservative and evidence-driven:
+
+- Only remove clearly invalid or physically impossible records
+- Retain operational edge cases that reflect real taxi behavior
+- Avoid aggressive filtering that would distort real-world distributions
 

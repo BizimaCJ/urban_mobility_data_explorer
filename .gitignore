@@ -2,3 +2,6 @@ data/raw/yellow_tripdata_2019-01.csv
 .venv/
 data/clean/*.csv
 data/clean/
+
+__pycache__/
+*.pyc

@@ -12,21 +12,19 @@ conn = mysql.connector.connect(
 
 cursor = conn.cursor()
 
-
 file_path = "data/clean/cleaned_trips.csv"
+
 inserted_rows = 0
 
 for chunk in pd.read_csv(file_path, chunksize=CHUNK_SIZE):
 
-    # basic cleanup
     chunk = chunk.dropna(subset=[
         "tpep_pickup_datetime",
         "tpep_dropoff_datetime"
     ])
 
-    chunk = chunk[chunk["VendorID"].isin([1, 2])]
-
     for _, row in chunk.iterrows():
+
         cursor.execute("""
             INSERT INTO trips (
                 vendor_id,
@@ -45,9 +43,17 @@ for chunk in pd.read_csv(file_path, chunksize=CHUNK_SIZE):
                 tolls_amount,
                 improvement_surcharge,
                 congestion_surcharge,
-                total_amount
+                total_amount,
+                trip_duration_minutes,
+                average_speed_mph,
+                fare_per_mile
             )
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            VALUES (
+                %s, %s, %s, %s, %s,
+                %s, %s, %s, %s, %s,
+                %s, %s, %s, %s, %s,
+                %s, %s, %s, %s, %s
+            )
         """, (
             row["VendorID"],
             row["RatecodeID"],
@@ -65,10 +71,10 @@ for chunk in pd.read_csv(file_path, chunksize=CHUNK_SIZE):
             row["tolls_amount"],
             row["improvement_surcharge"],
             row["congestion_surcharge"],
-            row["total_amount"]
+            row["total_amount"],
             row["trip_duration_minutes"],
             row["average_speed_mph"],
-            row["fare_per_mile"],
+            row["fare_per_mile"]
         ))
 
         inserted_rows += 1
@@ -80,4 +86,3 @@ cursor.close()
 conn.close()
 
 print(f"Finished loading trips. Total rows inserted: {inserted_rows}")
-

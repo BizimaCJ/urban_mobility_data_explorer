@@ -66,6 +66,9 @@ for chunk in pd.read_csv(file_path, chunksize=CHUNK_SIZE):
             row["improvement_surcharge"],
             row["congestion_surcharge"],
             row["total_amount"]
+            row["trip_duration_minutes"],
+            row["average_speed_mph"],
+            row["fare_per_mile"],
         ))
 
         inserted_rows += 1

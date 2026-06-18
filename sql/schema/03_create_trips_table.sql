@@ -24,6 +24,10 @@ CREATE TABLE trips (
     congestion_surcharge DECIMAL(10,2),
     total_amount DECIMAL(10,2) NOT NULL,
 
+    trip_duration_minutes DECIMAL(10,2),
+    average_speed_mph DECIMAL(10,2),
+    fare_per_mile DECIMAL(10,2),
+
     CONSTRAINT fk_vendor
         FOREIGN KEY (vendor_id)
         REFERENCES vendors(vendor_id),

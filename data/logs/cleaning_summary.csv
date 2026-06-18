@@ -1,0 +1,11 @@
+issue,count
+negative_fares,9557
+invalid_distances,0
+invalid_passenger_counts,117279
+invalid_timestamps,4
+invalid_years,439
+duplicate_records,0
+invalid_ratecodes,138
+rows_before,7667792
+rows_after,7463557
+rows_removed,204235

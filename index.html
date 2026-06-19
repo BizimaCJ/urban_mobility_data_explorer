@@ -11,259 +11,274 @@
     <script src="web/charts.js" defer></script>
 </head>
 <body>
+<noscript>
+    <p style="color:red; text-align:center;">This site requires JavaScript to function properly.</p>
+</noscript>
 
-<nav class="navbar" id="navbar">
-    <div class="nav-inner">
-        <div class="nav-logo">
-            <div class="logo-mark"></div>
-            <span class="nav-brand">MOBILITY</span>
-        </div>
-        <ul class="nav-links">
-            <li><a href="#overview" class="nav-link active" data-section="overview">Overview</a></li>
-            <li><a href="#trips" class="nav-link" data-section="trips">Trips</a></li>
-            <li><a href="#fares" class="nav-link" data-section="fares">Fares</a></li>
-            <li><a href="#map" class="nav-link" data-section="map">Map</a></li>
-            <li><a href="#zones" class="nav-link" data-section="zones">Zones</a></li>
-        </ul>
-        <div class="nav-right">
-            <span class="status-dot"></span>
-            <span class="nav-status" id="last-updated">Live</span>
-        </div>
-    </div>
-    <div class="nav-progress"></div>
-</nav>
-
+<!-- Main content wrapped in semantic main tag -->
 <main>
 
-
-    <section class="hero-section" id="overview">
-        <div class="hero-bg"></div>
-        <div class="hero-content container">
-            <div class="hero-text fade-in" style="--delay:0s">
-                <p class="hero-eyebrow">Urban Mobility Data Explorer</p>
-                <h1 class="hero-title">How the city <span class="hero-accent">moves</span></h1>
-                <p class="hero-desc">Explore taxi trip patterns, fare trends, and pickup hotspots across the city.</p>
+    <nav class="navbar" id="navbar" role="navigation" aria-label="Main Navigation">
+        <div class="nav-inner">
+            <div class="nav-logo">
+                <div class="logo-mark"></div>
+                <span class="nav-brand">MOBILITY</span>
             </div>
-
-            <! Filters>
-            <div class="filters-bar fade-in" style="--delay:0.2s">
-                <div class="filter-group">
-                    <label for="filter-time">Time of Day</label>
-                    <select id="filter-time">
-                        <option value="all">All Hours</option>
-                        <option value="morning">Morning (6am–12pm)</option>
-                        <option value="afternoon">Afternoon (12pm–6pm)</option>
-                        <option value="evening">Evening (6pm–12am)</option>
-                        <option value="night">Night (12am–6am)</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="filter-borough">Borough</label>
-                    <select id="filter-borough">
-                        <option value="all">All Boroughs</option>
-                        <option value="Manhattan">Manhattan</option>
-                        <option value="Brooklyn">Brooklyn</option>
-                        <option value="Queens">Queens</option>
-                        <option value="Bronx">Bronx</option>
-                        <option value="Staten Island">Staten Island</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="filter-distance">Distance</label>
-                    <select id="filter-distance">
-                        <option value="all">All Distances</option>
-                        <option value="short">Short (0–2 mi)</option>
-                        <option value="medium">Medium (2–10 mi)</option>
-                        <option value="long">Long (10+ mi)</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="filter-fare">Fare Range</label>
-                    <select id="filter-fare">
-                        <option value="all">All Fares</option>
-                        <option value="low">Low ($0–$15)</option>
-                        <option value="mid">Mid ($15–$50)</option>
-                        <option value="high">High ($50+)</option>
-                    </select>
-                </div>
-                <div class="filter-actions">
-                    <button class="btn-apply" id="btn-apply">Apply</button>
-                    <button class="btn-reset" id="btn-reset">Reset</button>
-                </div>
-            </div>
-
-            <! KPI Cards>
-            <div class="kpi-grid fade-in" style="--delay:0.35s">
-                <div class="kpi-card accent">
-                    <div class="kpi-label">Total Trips</div>
-                    <div class="kpi-value" id="kpi-trips">—</div>
-                    <div class="kpi-bar"><div class="kpi-bar-fill" style="width:100%"></div></div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Avg Fare</div>
-                    <div class="kpi-value" id="kpi-fare">—</div>
-                    <div class="kpi-bar"><div class="kpi-bar-fill" style="width:72%"></div></div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Avg Distance</div>
-                    <div class="kpi-value" id="kpi-distance">—</div>
-                    <div class="kpi-bar"><div class="kpi-bar-fill" style="width:48%"></div></div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Avg Duration</div>
-                    <div class="kpi-value" id="kpi-duration">—</div>
-                    <div class="kpi-bar"><div class="kpi-bar-fill" style="width:60%"></div></div>
-                </div>
+            <ul class="nav-links">
+                <li><a href="#overview" class="nav-link active" data-section="overview">Overview</a></li>
+                <li><a href="#trips" class="nav-link" data-section="trips">Trips</a></li>
+                <li><a href="#fares" class="nav-link" data-section="fares">Fares</a></li>
+                <li><a href="#map" class="nav-link" data-section="map">Map</a></li>
+                <li><a href="#zones" class="nav-link" data-section="zones">Zones</a></li>
+            </ul>
+            <div class="nav-right">
+                <span class="status-dot"></span>
+                <span class="nav-status" id="last-updated">Live</span>
             </div>
         </div>
+        <div class="nav-progress"></div>
+    </nav>
 
-        <! scroll arrow >
-        <a href="#trips" class="scroll-arrow" aria-label="Scroll to trips section">
-            <div class="arrow-label">Trips by Borough</div>
-            <div class="arrow-icon">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <path d="M10 4v12M5 11l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </div>
-        </a>
-    </section>
+    <div class="slider-wrapper">
 
-    <! Trips Section >
-    <section class="content-section" id="trips">
-        <div class="container">
-            <div class="section-header fade-in" style="--delay:0s">
-                <div class="section-label">01</div>
-                <div>
-                    <h2 class="section-title">Trips by Borough</h2>
-                    <p class="section-sub">Total pickups and hourly distribution</p>
-                </div>
-            </div>
-            <div class="charts-row fade-in" style="--delay:0.1s">
-                <div class="chart-card wide">
-                    <div class="chart-header">
-                        <h3 class="chart-title">Trips by Borough</h3>
-                        <span class="chart-sub">Total pickups per borough</span>
+        <button class="slide-btn prev" aria-label="Previous slide" type="button">&#10094;</button>
+        <div class="slider" id="slider">
+
+            <section class="hero-section" id="overview" aria-label="Overview Section">
+                <div class="hero-bg"></div>
+                <div class="hero-content container">
+                    <div class="hero-text fade-in" style="--delay:0s">
+                        <p class="hero-eyebrow">Urban Mobility Data Explorer</p>
+                        <h1 class="hero-title">How the city <span class="hero-accent">moves</span></h1>
+                        <p class="hero-desc">Explore taxi trip patterns, fare trends, and pickup hotspots across the city.</p>
                     </div>
-                    <canvas id="chart-borough"></canvas>
-                </div>
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3 class="chart-title">Trips by Hour</h3>
-                        <span class="chart-sub">Hourly distribution</span>
-                    </div>
-                    <canvas id="chart-time"></canvas>
-                </div>
-            </div>
-        </div>
-        <a href="#fares" class="scroll-arrow" aria-label="Scroll to fares section">
-            <div class="arrow-label">Average Fare by Borough</div>
-            <div class="arrow-icon">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <path d="M10 4v12M5 11l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </div>
-        </a>
-    </section>
 
-    <! Fares Section >
-    <section class="content-section" id="fares">
-        <div class="container">
-            <div class="section-header fade-in" style="--delay:0s">
-                <div class="section-label">02</div>
-                <div>
-                    <h2 class="section-title">Fare Analysis</h2>
-                    <p class="section-sub">Average fares and trip distance breakdown</p>
-                </div>
-            </div>
-            <div class="charts-row fade-in" style="--delay:0.1s">
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3 class="chart-title">Average Fare by Borough</h3>
-                        <span class="chart-sub">Mean fare amount</span>
+                    <!-- Filters -->
+                    <div class="filters-bar fade-in" style="--delay:0.2s" role="region" aria-label="Filters">
+                        <div class="filter-group">
+                            <label for="filter-time">Time of Day</label>
+                            <select id="filter-time" aria-label="Time of Day filter">
+                                <option value="all">All Hours</option>
+                                <option value="morning">Morning (6am–12pm)</option>
+                                <option value="afternoon">Afternoon (12pm–6pm)</option>
+                                <option value="evening">Evening (6pm–12am)</option>
+                                <option value="night">Night (12am–6am)</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="filter-borough">Borough</label>
+                            <select id="filter-borough" aria-label="Borough filter">
+                                <option value="all">All Boroughs</option>
+                                <option value="Manhattan">Manhattan</option>
+                                <option value="Brooklyn">Brooklyn</option>
+                                <option value="Queens">Queens</option>
+                                <option value="Bronx">Bronx</option>
+                                <option value="Staten Island">Staten Island</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="filter-distance">Distance</label>
+                            <select id="filter-distance" aria-label="Distance filter">
+                                <option value="all">All Distances</option>
+                                <option value="short">Short (0–2 mi)</option>
+                                <option value="medium">Medium (2–10 mi)</option>
+                                <option value="long">Long (10+ mi)</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="filter-fare">Fare Range</label>
+                            <select id="filter-fare" aria-label="Fare Range filter">
+                                <option value="all">All Fares</option>
+                                <option value="low">Low ($0–$15)</option>
+                                <option value="mid">Mid ($15–$50)</option>
+                                <option value="high">High ($50+)</option>
+                            </select>
+                        </div>
+                        <div class="filter-actions">
+                            <button class="btn-apply" id="btn-apply" type="button" aria-label="Apply filters">Apply</button>
+                            <button class="btn-reset" id="btn-reset" type="button" aria-label="Reset filters">Reset</button>
+                        </div>
                     </div>
-                    <canvas id="chart-fare"></canvas>
-                </div>
-                <div class="chart-card wide">
-                    <div class="chart-header">
-                        <h3 class="chart-title">Distance Distribution</h3>
-                        <span class="chart-sub">How far are trips?</span>
+
+                    <!-- KPI Cards -->
+                    <div class="kpi-grid fade-in" style="--delay:0.35s" role="region" aria-label="Key Performance Indicators">
+                        <div class="kpi-card accent">
+                            <div class="kpi-label">Total Trips</div>
+                            <div class="kpi-value" id="kpi-trips">—</div>
+                            <div class="kpi-bar"><div class="kpi-bar-fill" style="width:100%"></div></div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-label">Avg Fare</div>
+                            <div class="kpi-value" id="kpi-fare">—</div>
+                            <div class="kpi-bar"><div class="kpi-bar-fill" style="width:72%"></div></div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-label">Avg Distance</div>
+                            <div class="kpi-value" id="kpi-distance">—</div>
+                            <div class="kpi-bar"><div class="kpi-bar-fill" style="width:48%"></div></div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-label">Avg Duration</div>
+                            <div class="kpi-value" id="kpi-duration">—</div>
+                            <div class="kpi-bar"><div class="kpi-bar-fill" style="width:60%"></div></div>
+                        </div>
                     </div>
-                    <canvas id="chart-distance"></canvas>
                 </div>
-            </div>
-        </div>
-        <a href="#map" class="scroll-arrow" aria-label="Scroll to map section">
-            <div class="arrow-label">Pickup Hotspots</div>
-            <div class="arrow-icon">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <path d="M10 4v12M5 11l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </div>
-        </a>
-    </section>
 
-    <! Map Section >
-    <section class="content-section" id="map">
-        <div class="container">
-            <div class="section-header fade-in" style="--delay:0s">
-                <div class="section-label">03</div>
-                <div>
-                    <h2 class="section-title">Pickup Hotspots</h2>
-                    <p class="section-sub">Most active pickup zones across the city</p>
-                </div>
-            </div>
-            <div class="map-wrapper fade-in" style="--delay:0.1s">
-                <div id="map-container"></div>
-            </div>
-        </div>
-        <a href="#zones" class="scroll-arrow" aria-label="Scroll to zones section">
-            <div class="arrow-label">Top 10 Busiest Zones</div>
-            <div class="arrow-icon">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <path d="M10 4v12M5 11l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </div>
-        </a>
-    </section>
+                <!-- Scroll arrow -->
+                <a href="#trips" class="scroll-arrow" aria-label="Scroll to trips section" role="link" tabindex="0">
+                    <div class="arrow-label">Trips by Borough</div>
+                    <div class="arrow-icon">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M10 4v12M5 11l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </a>
+            </section>
 
-    <! Zones Table Section >
-    <section class="content-section" id="zones">
-        <div class="container">
-            <div class="section-header fade-in" style="--delay:0s">
-                <div class="section-label">04</div>
-                <div>
-                    <h2 class="section-title">Top 10 Busiest Pickup Zones</h2>
-                    <p class="section-sub">Ranked by total trip count</p>
+            <!-- Trips Section -->
+            <section class="content-section" id="trips" aria-label="Trips Section">
+                <div class="container">
+                    <div class="section-header fade-in" style="--delay:0s">
+                        <div class="section-label">01</div>
+                        <div>
+                            <h2 class="section-title">Trips by Borough</h2>
+                            <p class="section-sub">Total pickups and hourly distribution</p>
+                        </div>
+                    </div>
+                    <div class="charts-row fade-in" style="--delay:0.1s">
+                        <div class="chart-card wide">
+                            <div class="chart-header">
+                                <h3 class="chart-title">Trips by Borough</h3>
+                                <span class="chart-sub">Total pickups per borough</span>
+                            </div>
+                            <canvas id="chart-borough"></canvas>
+                        </div>
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h3 class="chart-title">Trips by Hour</h3>
+                                <span class="chart-sub">Hourly distribution</span>
+                            </div>
+                            <canvas id="chart-time"></canvas>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="table-section fade-in" style="--delay:0.1s">
-                <div class="table-wrapper">
-                    <table id="zones-table">
-                        <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Zone</th>
-                            <th>Borough</th>
-                            <th>Total Trips</th>
-                            <th>Avg Fare ($)</th>
-                            <th>Avg Distance (mi)</th>
-                        </tr>
-                        </thead>
-                        <tbody id="zones-tbody">
-                        <tr><td colspan="6" class="loading-row">Loading data...</td></tr>
-                        </tbody>
-                    </table>
+                <!-- Scroll arrow -->
+                <a href="#fares" class="scroll-arrow" aria-label="Scroll to fares section" role="link" tabindex="0">
+                    <div class="arrow-label">Average Fare by Borough</div>
+                    <div class="arrow-icon">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M10 4v12M5 11l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </a>
+            </section>
+
+            <!-- Fares Section -->
+            <section class="content-section" id="fares" aria-label="Fares Section">
+                <div class="container">
+                    <div class="section-header fade-in" style="--delay:0s">
+                        <div class="section-label">02</div>
+                        <div>
+                            <h2 class="section-title">Fare Analysis</h2>
+                            <p class="section-sub">Average fares and trip distance breakdown</p>
+                        </div>
+                    </div>
+                    <div class="charts-row fade-in" style="--delay:0.1s">
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h3 class="chart-title">Average Fare by Borough</h3>
+                                <span class="chart-sub">Mean fare amount</span>
+                            </div>
+                            <canvas id="chart-fare"></canvas>
+                        </div>
+                        <div class="chart-card wide">
+                            <div class="chart-header">
+                                <h3 class="chart-title">Distance Distribution</h3>
+                                <span class="chart-sub">How far are trips?</span>
+                            </div>
+                            <canvas id="chart-distance"></canvas>
+                        </div>
+                    </div>
                 </div>
-            </div>
+                <!-- Scroll arrow -->
+                <a href="#map" class="scroll-arrow" aria-label="Scroll to map section" role="link" tabindex="0">
+                    <div class="arrow-label">Pickup Hotspots</div>
+                    <div class="arrow-icon">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M10 4v12M5 11l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </a>
+            </section>
+
+            <!-- Map Section -->
+            <section class="content-section" id="map" aria-label="Pickup Hotspots Section">
+                <div class="container">
+                    <div class="section-header fade-in" style="--delay:0s">
+                        <div class="section-label">03</div>
+                        <div>
+                            <h2 class="section-title">Pickup Hotspots</h2>
+                            <p class="section-sub">Most active pickup zones across the city</p>
+                        </div>
+                    </div>
+                    <div class="map-wrapper fade-in" style="--delay:0.1s">
+                        <div id="map-container"></div>
+                    </div>
+                </div>
+                <!-- Scroll arrow -->
+                <a href="#zones" class="scroll-arrow" aria-label="Scroll to zones section" role="link" tabindex="0">
+                    <div class="arrow-label">Top 10 Busiest Zones</div>
+                    <div class="arrow-icon">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M10 4v12M5 11l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </a>
+            </section>
+
+            <!-- Zones Table Section -->
+            <section class="content-section" id="zones" aria-label="Busiest Zones Section">
+                <div class="container">
+                    <div class="section-header fade-in" style="--delay:0s">
+                        <div class="section-label">04</div>
+                        <div>
+                            <h2 class="section-title">Top 10 Busiest Pickup Zones</h2>
+                            <p class="section-sub">Ranked by total trip count</p>
+                        </div>
+                    </div>
+                    <div class="table-section fade-in" style="--delay:0.1s">
+                        <div class="table-wrapper">
+                            <table id="zones-table" role="table" aria-label="Zones Data">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Zone</th>
+                                    <th>Borough</th>
+                                    <th>Total Trips</th>
+                                    <th>Avg Fare ($)</th>
+                                    <th>Avg Distance (mi)</th>
+                                </tr>
+                                </thead>
+                                <tbody id="zones-tbody">
+                                <tr><td colspan="6" class="loading-row">Loading data...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
-    </section>
+    </div>
 
 </main>
 
+<!-- Footer -->
 <footer class="site-footer">
     <p>Urban Mobility Data Explorer &mdash; By Team 2 &mdash; 2026</p>
 </footer>
 
+<!-- Scripts for interaction -->
 <script>
     // Navbar scroll behavior
     const navbar = document.getElementById("navbar");

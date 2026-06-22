@@ -18,6 +18,7 @@ def load_data():
     print("Rows loaded:", len(df))
     return df
 
+
 def clean(df):
     print("Cleaning data...")
 
@@ -26,42 +27,78 @@ def clean(df):
     summary = []
 
     negative_fares = df[df["fare_amount"] <= 0]
-    negative_fares.to_csv(LOG_DIR / "negative_fares.csv", index=False)
-    summary.append(["negative_fares", len(negative_fares)])
+    negative_fares.to_csv(
+        LOG_DIR / "negative_fares.csv",
+        index=False
+    )
+    summary.append([
+        "negative_fares",
+        len(negative_fares)
+    ])
     df = df[df["fare_amount"] > 0]
 
     invalid_distance = df[df["trip_distance"] < 0]
-    invalid_distance.to_csv(LOG_DIR / "invalid_distances.csv", index=False)
-    summary.append(["invalid_distances", len(invalid_distance)])
+    invalid_distance.to_csv(
+        LOG_DIR / "invalid_distances.csv",
+        index=False
+    )
+    summary.append([
+        "invalid_distances",
+        len(invalid_distance)
+    ])
     df = df[df["trip_distance"] >= 0]
 
     invalid_passengers = df[df["passenger_count"] < 1]
-    invalid_passengers.to_csv(LOG_DIR / "invalid_passenger_counts.csv", index=False)
-    summary.append(["invalid_passenger_counts", len(invalid_passengers)])
+    invalid_passengers.to_csv(
+        LOG_DIR / "invalid_passenger_counts.csv",
+        index=False
+    )
+    summary.append([
+        "invalid_passenger_counts",
+        len(invalid_passengers)
+    ])
     df = df[df["passenger_count"] >= 1]
 
+    df["tpep_pickup_datetime"] = pd.to_datetime(
+        df["tpep_pickup_datetime"],
+        errors="coerce"
+    )
+
+    df["tpep_dropoff_datetime"] = pd.to_datetime(
+        df["tpep_dropoff_datetime"],
+        errors="coerce"
+    )
+
     invalid_timestamps = df[
-        df["tpep_dropoff_datetime"] < df["tpep_pickup_datetime"]
+        df["tpep_dropoff_datetime"]
+        < df["tpep_pickup_datetime"]
     ]
     invalid_timestamps.to_csv(
         LOG_DIR / "invalid_timestamps.csv",
         index=False
     )
-    summary.append(["invalid_timestamps", len(invalid_timestamps)])
+    summary.append([
+        "invalid_timestamps",
+        len(invalid_timestamps)
+    ])
     df = df[
-        df["tpep_dropoff_datetime"] >= df["tpep_pickup_datetime"]
+        df["tpep_dropoff_datetime"]
+        >= df["tpep_pickup_datetime"]
     ]
 
     invalid_years = df[
-        ~df["tpep_pickup_datetime"].astype(str).str.contains("2019")
+        df["tpep_pickup_datetime"].dt.year != 2019
     ]
     invalid_years.to_csv(
         LOG_DIR / "invalid_years.csv",
         index=False
     )
-    summary.append(["invalid_years", len(invalid_years)])
+    summary.append([
+        "invalid_years",
+        len(invalid_years)
+    ])
     df = df[
-        df["tpep_pickup_datetime"].astype(str).str.contains("2019")
+        df["tpep_pickup_datetime"].dt.year == 2019
     ]
 
     duplicates = df[df.duplicated()]
@@ -69,28 +106,93 @@ def clean(df):
         LOG_DIR / "duplicate_records.csv",
         index=False
     )
-    summary.append(["duplicate_records", len(duplicates)])
+    summary.append([
+        "duplicate_records",
+        len(duplicates)
+    ])
     df = df.drop_duplicates()
 
     invalid_ratecodes = df[
-        ~df["RatecodeID"].isin([1, 2, 3, 4, 5, 6])
+        ~df["RatecodeID"].isin(
+            [1, 2, 3, 4, 5, 6]
+        )
     ]
     invalid_ratecodes.to_csv(
         LOG_DIR / "invalid_ratecodes.csv",
         index=False
     )
-    summary.append(["invalid_ratecodes", len(invalid_ratecodes)])
-    df = df[df["RatecodeID"].isin([1, 2, 3, 4, 5, 6])]
+    summary.append([
+        "invalid_ratecodes",
+        len(invalid_ratecodes)
+    ])
+    df = df[
+        df["RatecodeID"].isin(
+            [1, 2, 3, 4, 5, 6]
+        )
+    ]
 
-    df = df[df["VendorID"].isin([1, 2])]
-    df = df[df["payment_type"].isin([1, 2, 3, 4, 5, 6])]
+    invalid_vendors = df[
+        ~df["VendorID"].isin([1, 2])
+    ]
+    invalid_vendors.to_csv(
+        LOG_DIR / "invalid_vendors.csv",
+        index=False
+    )
+    summary.append([
+        "invalid_vendors",
+        len(invalid_vendors)
+    ])
+    df = df[
+        df["VendorID"].isin([1, 2])
+    ]
+
+    invalid_payment_types = df[
+        ~df["payment_type"].isin(
+            [1, 2, 3, 4, 5, 6]
+        )
+    ]
+    invalid_payment_types.to_csv(
+        LOG_DIR / "invalid_payment_types.csv",
+        index=False
+    )
+    summary.append([
+        "invalid_payment_types",
+        len(invalid_payment_types)
+    ])
+    df = df[
+        df["payment_type"].isin(
+            [1, 2, 3, 4, 5, 6]
+        )
+    ]
+
+    missing_lookup_values = df[
+        df[
+            [
+                "VendorID",
+                "RatecodeID",
+                "payment_type"
+            ]
+        ].isnull().any(axis=1)
+    ]
+    missing_lookup_values.to_csv(
+        LOG_DIR / "missing_lookup_values.csv",
+        index=False
+    )
+    summary.append([
+        "missing_lookup_values",
+        len(missing_lookup_values)
+    ])
+
     df = df.dropna(
-        subset=["VendorID", "RatecodeID", "payment_type"]
+        subset=[
+            "VendorID",
+            "RatecodeID",
+            "payment_type"
+        ]
     )
 
-
-    pickup = pd.to_datetime(df["tpep_pickup_datetime"])
-    dropoff = pd.to_datetime(df["tpep_dropoff_datetime"])
+    pickup = df["tpep_pickup_datetime"]
+    dropoff = df["tpep_dropoff_datetime"]
 
     df["trip_duration_minutes"] = (
         dropoff - pickup
@@ -103,14 +205,20 @@ def clean(df):
 
     df["fare_per_mile"] = (
         df["fare_amount"] /
-        df["trip_distance"].replace(0, pd.NA)
+        df["trip_distance"].replace(
+            0,
+            pd.NA
+        )
     )
 
     after = len(df)
 
     summary.append(["rows_before", before])
     summary.append(["rows_after", after])
-    summary.append(["rows_removed", before - after])
+    summary.append([
+        "rows_removed",
+        before - after
+    ])
 
     pd.DataFrame(
         summary,
@@ -120,12 +228,13 @@ def clean(df):
         index=False
     )
 
-    print("Before:", before)
-    print("After:", after)
-    print("Removed:", before - after)
+    print()
+    print("CLEANING SUMMARY")
+
+    for issue, count in summary:
+        print(f"{issue}: {count}")
 
     return df
-
 
 def save(df):
     print("Saving files...")

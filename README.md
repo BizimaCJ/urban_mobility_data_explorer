@@ -7,6 +7,8 @@
 ![Team](https://img.shields.io/badge/Team-3%20Developers-purple)
 
 **Live Demo**: https://bizimacj.github.io/urban_mobility_data_explorer/
+**Live Video**: https://youtu.be/WylIO-DkkcQ
+
 
 ---
 

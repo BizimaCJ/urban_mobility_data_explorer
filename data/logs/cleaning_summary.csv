@@ -6,6 +6,9 @@ invalid_timestamps,4
 invalid_years,439
 duplicate_records,0
 invalid_ratecodes,138
+invalid_vendors,76818
+invalid_payment_types,0
+missing_lookup_values,0
 rows_before,7667792
 rows_after,7463557
 rows_removed,204235
